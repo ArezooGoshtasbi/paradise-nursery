@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); 
-    const [addedToCart, setAddedToCart] = useState({});
 
 
 
@@ -225,7 +224,7 @@ function ProductList({ onHomeClick }) {
         padding: '15px',
         display: 'flex',
         justifyContent: 'space-between',
-        alignIems: 'center',
+        alignItems: 'center',
         fontSize: '20px',
     }
     const styleObjUl = {
@@ -266,17 +265,11 @@ function ProductList({ onHomeClick }) {
    
     const handleAddToCart = (product) => {
         dispatch(addItem(product)); 
-      
-        setAddedToCart((prevState) => ({ 
-          ...prevState, 
-          [product.name]: true, 
-        }));
     };
-
-    const basketItems = useSelector((state) => state.cart.items);
-    console.log(basketItems)
-
-
+    const isProductInCart = (productName) => {
+        return cartItems.some(item => item.name === productName);
+      };
+      
     return (
         <div>
             <div className="navbar" style={styleObj}>
@@ -303,9 +296,7 @@ function ProductList({ onHomeClick }) {
                                     <circle cx="184" cy="216" r="12"></circle>
                                     <path d="M42.3,72H221.7l-26.4,92.4A15.9,15.9,0,0,1,179.9,176H84.1a15.9,15.9,0,0,1-15.4-11.6L32.5,37.8A8,8,0,0,0,24.8,32H8" fill="none" stroke="#faf9f9" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" id="mainIconPathAttribute"></path>
                                 </svg>
-                                {totalItemsInCart > 0 && (
-                                    <span className="cart-count-badge">{totalItemsInCart}</span>
-                                )}
+                                <span className="cart-count-badge">{totalItemsInCart}</span>
                             </h1>
                         </a>
                     </div>
@@ -332,11 +323,16 @@ function ProductList({ onHomeClick }) {
                                     <div className="product-cost">${plant.cost}</div> 
                                     <button
                                         className="product-button"
-                                        onClick={() => handleAddToCart(plant)} 
+                                        onClick={() => handleAddToCart(plant)}
+                                        disabled={isProductInCart(plant.name)}
+                                        style={{
+                                            backgroundColor: isProductInCart(plant.name) ? '#ccc' : '#4CAF50',
+                                            color: isProductInCart(plant.name) ? '#666' : 'white',
+                                            cursor: isProductInCart(plant.name) ? 'not-allowed' : 'pointer',
+                                        }}
                                     >
-                                        Add to Cart
+                                        {isProductInCart(plant.name) ? 'Added to Cart' : 'Add to Cart'}
                                     </button>
-
                                 </div>
                             ))}
                             </div>

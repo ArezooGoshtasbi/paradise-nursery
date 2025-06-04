@@ -76,7 +76,7 @@ const CartItem = ({ onContinueShopping }) => {
         <button className="get-started-button1" onClick={handleCheckoutShopping}>Checkout</button>
       </div>
     </div>
-  );
+  );    
 };
 
 export default CartItem;
