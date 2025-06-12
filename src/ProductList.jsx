@@ -254,10 +254,10 @@ function ProductList({ onHomeClick }) {
         setShowCart(false); 
     };
 
-    const handleContinueShopping = (e) => {
-        e.preventDefault();
+    const handleContinueShopping = () => {
         setShowCart(false);
     };
+    
     const dispatch = useDispatch();  
     const cartItems = useSelector((state) => state.cart.items);  
     const totalItemsInCart = cartItems.reduce((total, item) => total + item.quantity, 0);  
